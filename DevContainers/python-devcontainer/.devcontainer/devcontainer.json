@@ -1,0 +1,21 @@
+{
+  "name": "Python Dev",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+
+  "remoteUser": "dev",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
+
+  "runArgs": [
+    "--userns=keep-id",
+    "--security-opt=label=disable",
+    "--network=host"
+  ],
+
+  "containerEnv": {
+    "DATABASE_URL": "postgres://dev:dev@localhost:5432/devdb?sslmode=disable"
+  }
+}

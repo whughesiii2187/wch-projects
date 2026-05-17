@@ -1,0 +1,49 @@
+{
+  "name": "Go",
+  "image": "mcr.microsoft.com/devcontainers/go:1.25-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": false
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {},
+    "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
+  },
+  "initializeCommand": {
+    "ensure-claude-dir": "mkdir -p \"${localEnv:HOME}${localEnv:USERPROFILE}/.claude\""
+  },
+  "onCreateCommand": {
+    "git-safe": "git config --global --add safe.directory ${containerWorkspaceFolder}"
+  },
+  "postCreateCommand": {
+    "gopls": "go install golang.org/x/tools/gopls@latest",
+    "delve": "go install github.com/go-delve/delve/cmd/dlv@latest",
+    "golangci-lint": "go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest",
+    "cobra-cli": "go install github.com/spf13/cobra-cli@latest",
+    "staticcheck": "go install honnef.co/go/tools/cmd/staticcheck@latest"
+  },
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude,target=/home/vscode/.claude,type=bind"
+  ],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "go.useLanguageServer": true,
+        "go.lintTool": "golangci-lint",
+        "go.lintOnSave": "package",
+        "go.lintFlags": ["--fast"],
+        "[go]": {
+          "editor.insertSpaces": false,
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "always"
+          }
+        }
+      },
+      "extensions": [
+        "golang.go",
+        "eamodio.gitlens"
+      ]
+    }
+  }
+}

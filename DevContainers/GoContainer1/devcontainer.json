@@ -1,0 +1,13 @@
+{
+  "name": "Go Dev + Postgres",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "features": {},
+  "customizations": {
+    "vscode": {}
+  },
+  "forwardPorts": [5432],
+  "remoteUser": "devuser"
+}
+
