@@ -1,6 +1,6 @@
 {
   "name": "Go",
-  "image": "mcr.microsoft.com/devcontainers/go:1.25-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/go:1.26-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "moby": false
@@ -14,6 +14,9 @@
   },
   "onCreateCommand": {
     "git-safe": "git config --global --add safe.directory ${containerWorkspaceFolder}"
+  },
+  "remoteEnv":{
+    "TERM": "xterm-256color"
   },
   "postCreateCommand": {
     "gopls": "go install golang.org/x/tools/gopls@latest",
