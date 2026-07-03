@@ -1,3 +1,4 @@
+// Package cmd where it all gets started
 package cmd
 
 import (
