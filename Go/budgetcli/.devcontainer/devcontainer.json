@@ -23,7 +23,7 @@
 
   // Postgres port. Only meaningful once the "db" service is enabled in
   // docker-compose.yml -- uncomment the line below when you do that.
-  // "forwardPorts": [5432],
+  "forwardPorts": [5432],
 
   "postCreateCommand": "go version && python3 --version",
 

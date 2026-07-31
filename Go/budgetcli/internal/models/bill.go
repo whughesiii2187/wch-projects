@@ -8,11 +8,12 @@ const (
 )
 
 type Bill struct {
-	BillName 				 string
+	BillName         string
 	DueRecurringDate int
 	DueAmount        float64
 	DueBalance       *float64
 	PayPeriodPaid    PayPeriod
 	IsAutoPay        bool
 	Notes            string
+	Annual           bool
 }

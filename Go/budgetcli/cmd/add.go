@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 
@@ -26,6 +27,7 @@ func runAdd(cmd *cobra.Command, args []string) {
 	var payPeriodInput string
 	var dueAmountInput string
 	var dueRecurringDateInput string
+	var annualInput string
 	var bill models.Bill
 
 	form := huh.NewForm(
@@ -53,6 +55,13 @@ func runAdd(cmd *cobra.Command, args []string) {
 					huh.NewOption("B", "B"),
 				).
 				Value(&payPeriodInput),
+			huh.NewSelect[string]().
+				Title("Is this bill annual or monthly").
+				Options(
+					huh.NewOption("Annual", "annual"),
+					huh.NewOption("Monthly", "monthly"),
+				).
+				Value(&annualInput),
 			huh.NewInput().
 				Title("Enter current due amount, if any").
 				Prompt("$").
@@ -114,5 +123,16 @@ func runAdd(cmd *cobra.Command, args []string) {
 	bill.DueRecurringDate, _ = strconv.Atoi(dueRecurringDateInput)
 	bill.DueAmount, _ = strconv.ParseFloat(dueAmountInput, 64)
 
-	fmt.Printf("%+v\n", bill)
+	if annualInput == "annual" {
+		bill.Annual = true
+	}
+	_, err = DB.Exec(context.Background(),
+		"INSERT INTO bills (bill_name, due_date, pay_period, auto_pay, annual, notes, balance) VALUES ($1,$2,$3,$4,$5,$6,$7)",
+		bill.BillName, bill.DueRecurringDate, bill.PayPeriodPaid, bill.IsAutoPay, bill.Annual, bill.Notes, bill.DueBalance,
+	)
+	if err != nil {
+		fmt.Println("Error inserting bill:", err)
+		return
+	}
+	fmt.Println("Bill added successfully")
 }
