@@ -145,7 +145,7 @@ func runAdd(cmd *cobra.Command, args []string) {
 					Affirmative("Yes").
 					Negative("No").
 					Value(&toContinue),
-			).WithHideFunc(func() bool { return toSave != true }),
+			).WithHideFunc(func() bool { return !toSave }),
 		)
 
 		err = form.Run()
@@ -165,7 +165,8 @@ func runAdd(cmd *cobra.Command, args []string) {
 }
 
 func insertAddData(b *models.Bill) error {
-	_, err := DB.Exec(context.Background(),
+	_, err := DB.Exec(
+		context.Background(),
 		"INSERT INTO bills (bill_name, due_date, pay_period, auto_pay, annual, notes, balance, amount_due) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
 		b.BillName, b.DueRecurringDate, b.PayPeriodPaid, b.IsAutoPay, b.Annual, b.Notes, b.DueBalance, b.DueAmount,
 	)

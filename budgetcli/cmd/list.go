@@ -35,7 +35,8 @@ func listOutput(month bool) {
 	if month {
 		timeSpan = "DATE_TRUNC('month', CURRENT_DATE) AND (DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month - 1 day')"
 	}
-	rows, err := DB.Query(context.Background(),
+	rows, err := DB.Query(
+		context.Background(),
 		fmt.Sprintf("select b.bill_name,a.due_date,a.amount_due, b.balance, a.pay_period, a.auto_pay, a.paid from bill_history as a join bills as b on a.bill_id = b.bill_id WHERE a.due_date BETWEEN %v;", timeSpan),
 	)
 	if err != nil {
@@ -93,7 +94,8 @@ func outputColorTable(c []models.Payments) {
 		Separator: renderer.Tint{FG: renderer.Colors{color.FgWhite}}, // White separators
 	}
 
-	table := tablewriter.NewTable(os.Stdout,
+	table := tablewriter.NewTable(
+		os.Stdout,
 		tablewriter.WithRenderer(renderer.NewColorized(colorCfg)),
 		tablewriter.WithConfig(tablewriter.Config{
 			Row: tw.CellConfig{
@@ -123,10 +125,10 @@ func outputColorTable(c []models.Payments) {
 		if i.DueBalance != nil {
 			balanceDue = fmt.Sprintf("%.2f", *i.DueBalance)
 		}
-		if i.IsAutoPay == true {
+		if i.IsAutoPay {
 			autoPay = "Y"
 		}
-		if i.Paid == true {
+		if i.Paid {
 			paid = "Y"
 		}
 		display = []string{billName, dueDate, amountDue, balanceDue, payPeriod, autoPay, paid}

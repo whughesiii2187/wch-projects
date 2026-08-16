@@ -47,5 +47,6 @@ type UpdatePayments struct {
 	BillName    string
 	DueDate     int
 	AmountDue   *float64
+	Paid        bool
 	AmountInput string // placeholder for form amount entered
 }
