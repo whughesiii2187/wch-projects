@@ -9,7 +9,7 @@ services:
     volumes:
       # Mounts the repo root (parent of .devcontainer) into the container.
       # Works regardless of what the repo/folder is named.
-      - ..:/workspace:cached
+      - ..:/workspace:cached,Z
     command: sleep infinity
     environment:
       - DB_HOST=db
@@ -42,7 +42,7 @@ services:
       POSTGRES_PASSWORD: dev
       POSTGRES_DB: devdb
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data:Z
     ports:
       - "5432:5432"
     healthcheck:
