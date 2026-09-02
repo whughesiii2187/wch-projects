@@ -4,8 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/charmbracelet/bubbles/table"
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
 	"github.com/whughesiii2187/wch-projects/Go/budgetcli/internal/models"
 )
@@ -20,35 +19,19 @@ func init() {
 	rootCmd.AddCommand(updateCmd)
 }
 
-type model struct {
-	tbl table.Model
-}
-
-func (m model) Init() tea.Cmd {
-	return nil
-}
-
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	var cmd tea.Cmd
-	m.tbl, cmd = m.tbl.Update(msg)
-	return m, cmd
-}
-
-func (m model) View() string {
-	return m.tbl.View()
-}
-
 func runUpdate(cmd *cobra.Command, args []string) {
-	updates, _ := pullUpdates()
-
-	[]table.Column{
-		{Title: "Bill Name", Width: 20},
-		{Title: "Due Date", Width: 12},
-		{Title: "Amount Due", Width: 12},
-		{Title: "Paid", Width: 8},
-	}
-
-	fmt.Printf("Rows: %v", updates)
+	formOptions := huh.NewForm(
+		huh.NewGroup(
+				huh.NewSelect[string]().
+					Title("Which update method to you choose?"). 
+					Options(
+					huh.NewOption("Update upcoming payment", "payment"),
+					huh.NewOption("Deactivate a bill", "deactivate"),
+			
+					
+				)
+			)
+		)
 }
 
 func pullUpdates() ([]models.UpdatePayments, error) {

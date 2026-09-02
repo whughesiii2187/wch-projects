@@ -45,7 +45,7 @@ type UpdatePayments struct {
 	PaymentId   int
 	BillId      int
 	BillName    string
-	DueDate     int
+	DueDate     time.Time
 	AmountDue   *float64
 	Paid        bool
 	AmountInput string // placeholder for form amount entered

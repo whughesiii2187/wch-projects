@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	pool, err := database.DbConnect()
+	pool, err := database.DBConnect()
 	if err != nil {
 		log.Fatal("Could not connect to database:", err)
 	}

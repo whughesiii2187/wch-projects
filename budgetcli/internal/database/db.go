@@ -19,8 +19,11 @@ import (
 // 	}
 // }
 
-func DbConnect() (*pgxpool.Pool, error) {
-	godotenv.Load(".env")
+func DBConnect() (*pgxpool.Pool, error) {
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Println("Error loading info")
+	}
 
 	dbUser := os.Getenv("DB_USER")
 	dbPass := os.Getenv("DB_PASSWORD")

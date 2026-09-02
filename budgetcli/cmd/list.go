@@ -33,7 +33,7 @@ func runList(cmd *cobra.Command, args []string) {
 func listOutput(month bool) {
 	timeSpan := "CURRENT_DATE AND CURRENT_DATE+14"
 	if month {
-		timeSpan = "DATE_TRUNC('month', CURRENT_DATE) AND (DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month - 1 day')"
+		timeSpan = "DATE_TRUNC('month', CURRENT_DATE) AND (DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '2 month - 1 day')"
 	}
 	rows, err := DB.Query(
 		context.Background(),
