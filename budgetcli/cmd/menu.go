@@ -31,8 +31,7 @@ func runMenu(cmd *cobra.Command, args []string) {
 						huh.NewOption("Add a new bill", "add"),
 						huh.NewOption("Prepare bills for payment", "prep"),
 						huh.NewOption("List upcoming payments", "list"),
-						// huh.NewOption("Update prepared payment info", "update1"),
-						// huh.NewOption("Update a bill", "update2"),
+						huh.NewOption("Update prepared payment info or mark bills inactive ", "update"),
 						huh.NewOption("Exit", "exit"),
 					).
 					Value(&menuSelected),
@@ -59,10 +58,8 @@ func runMenu(cmd *cobra.Command, args []string) {
 			runPrep(nil, nil)
 		case "list":
 			listOutput(fullMonth)
-		// case "update1":
-		// 	runUpdate(nil, nil)
-		// case "update2":
-		// 	runUpdate(nil, nil)
+		case "update":
+			runUpdate(nil, nil)
 		default:
 			os.Exit(0)
 		}

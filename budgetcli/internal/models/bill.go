@@ -50,3 +50,18 @@ type UpdatePayments struct {
 	Paid        bool
 	AmountInput string // placeholder for form amount entered
 }
+
+type UpdateBill struct {
+	BillId           int
+	BillName         string
+	DueRecurringDate int
+	DueAmount        *float64
+	DueBalance       *float64
+	PayPeriodPaid    string
+	IsAutoPay        bool
+	Notes            string
+	Annual           bool
+	AmountInput      string
+	BalanceInput     string
+	IsActive         bool
+}
