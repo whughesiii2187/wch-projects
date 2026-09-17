@@ -57,7 +57,7 @@ type UpdateBill struct {
 	DueRecurringDate int
 	DueAmount        *float64
 	DueBalance       *float64
-	PayPeriodPaid    string
+	PayPeriodPaid    PayPeriod
 	IsAutoPay        bool
 	Notes            string
 	Annual           bool

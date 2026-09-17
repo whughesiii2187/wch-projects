@@ -72,6 +72,7 @@ func runUpdate(cmd *cobra.Command, args []string) {
 			if err != nil {
 				fmt.Printf("error displaying form: %v", err)
 			}
+			break
 		}
 	}
 }
@@ -137,7 +138,6 @@ func pullBills() ([]models.UpdateBill, error) {
 			&updates.Notes,
 			&updates.IsActive,
 		)
-
 		if err != nil {
 			fmt.Printf("error reading rows: %v", err)
 			return nil, err
@@ -148,7 +148,6 @@ func pullBills() ([]models.UpdateBill, error) {
 }
 
 func updateBillsSelectForm() (models.UpdateBill, error) {
-
 	var selection int
 	var fields []huh.Option[int]
 
@@ -187,7 +186,7 @@ func updateBillsSelectForm() (models.UpdateBill, error) {
 }
 
 func updateBillInsertForm(chosenBill models.UpdateBill) error {
-	var amount, balance, annual, dueDate string
+	var amount, balance, annual, dueDate, payPeriod, active string
 	if chosenBill.DueAmount != nil {
 		amount = strconv.FormatFloat(*chosenBill.DueAmount, 'f', 2, 64)
 	} else {
@@ -198,7 +197,18 @@ func updateBillInsertForm(chosenBill models.UpdateBill) error {
 	} else {
 		balance = "0.00"
 	}
-	dueDate = chosenBill.DueRecurringDate
+	if chosenBill.Annual != false {
+		annual = "annual"
+	} else {
+		annual = "monthly"
+	}
+	if chosenBill.IsActive != true {
+		active = "notactive"
+	} else {
+		active = "active"
+	}
+	dueDate = strconv.Itoa(chosenBill.DueRecurringDate)
+	payPeriod = string(chosenBill.PayPeriodPaid)
 
 	form := huh.NewForm(
 		huh.NewGroup(
@@ -217,7 +227,7 @@ func updateBillInsertForm(chosenBill models.UpdateBill) error {
 					huh.NewOption("A", "A"),
 					huh.NewOption("B", "B"),
 				).
-				Value(&chosenBill.PayPeriodPaid),
+				Value(&payPeriod),
 			huh.NewSelect[string]().
 				Title("Annual or Monthly").
 				Options(
@@ -228,7 +238,27 @@ func updateBillInsertForm(chosenBill models.UpdateBill) error {
 			huh.NewInput().
 				Title("Enter current due amount, if any").
 				Prompt("$").
-				Value(&amount),
+				Value(&amount).
+				Validate(func(s string) error {
+					_, err := strconv.ParseFloat(s, 64)
+					if err != nil {
+						return fmt.Errorf("please enter a valid amount")
+					}
+					return nil
+				},
+				),
+			huh.NewInput().
+				Title("Enter the current balance due:").
+				Prompt("$").
+				Value(&balance).
+				Validate(func(s string) error {
+					_, err := strconv.ParseFloat(s, 64)
+					if err != nil {
+						return fmt.Errorf("please enter a valid amount")
+					}
+					return nil
+				},
+				),
 			huh.NewInput().
 				Title("Enter the date due (day of the month)").
 				Prompt(":").
@@ -244,30 +274,45 @@ func updateBillInsertForm(chosenBill models.UpdateBill) error {
 				Title("Additional Notes:").
 				Prompt("?").
 				Value(&chosenBill.Notes),
-			huh.NewInput().
-				Title("Enter the current balance due:").
-				Prompt("$").
-				Value(&balance).
-				Validate(func(s string) error {
-					_, err := strconv.ParseFloat(s, 64)
-					if err != nil {
-						return fmt.Errorf("please enter a valid amount")
-					}
-					return nil
-				},
-				),
+			huh.NewSelect[string]().
+				Title("Deactivate or leave Active").
+				Options(
+					huh.NewOption("Activate", "active"),
+					huh.NewOption("Deactivate", "notactive"),
+				).
+				Value(&active),
 		),
 	)
 
-	// Generate new form. No need for dynamics here since only one item is being manipulated at one time
-	// We want the values of the inputs to be prefilled but editable. see setting value in huh docs
-	// This would mean transforming *float64 items to a string before setting them as a default value
-	//
-	// Run form
-	//
-	// On enter, perform some validations and tranforms before entering into SQL
-	//
-	// UPDATE SQL goes here, using chosenBills[i].PaymentId, chosenBills[i].AmountDue, chosenBills[i].Paid
+	err := form.Run()
+	if err != nil {
+		fmt.Printf("error running form: %v", err)
+	}
+
+	newAmount, _ := strconv.ParseFloat(amount, 64)
+	if newAmount != 0 {
+		chosenBill.DueAmount = &newAmount
+	}
+	newBalance, _ := strconv.ParseFloat(balance, 64)
+	if newBalance != 0 {
+		chosenBill.DueBalance = &newBalance
+	}
+	chosenBill.DueRecurringDate, _ = strconv.Atoi(dueDate)
+	chosenBill.PayPeriodPaid = models.PayPeriod(payPeriod)
+	if annual == "annual" {
+		chosenBill.Annual = true
+	}
+	if active == "notactive" {
+		chosenBill.IsActive = false
+	}
+
+	_, err = DB.Exec(context.Background(),
+		"UPDATE bills SET bill_name = $1, due_date = $2, pay_period = $3, balance =$4, amount_due = $5, auto_pay = $6, annual = $7, notes = $8, active = $9  WHERE bill_id = $10",
+		chosenBill.BillName, chosenBill.DueRecurringDate, chosenBill.PayPeriodPaid, chosenBill.DueBalance, chosenBill.DueAmount, chosenBill.IsAutoPay, chosenBill.Annual, chosenBill.Notes, chosenBill.IsActive, chosenBill.BillId,
+	)
+	if err != nil {
+		return fmt.Errorf("insert update failed: %v", err)
+	}
 	return nil
 }
 
