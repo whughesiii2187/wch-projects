@@ -1,0 +1,33 @@
+name,resource_group,location,size,os,power_state,tags
+vm-web-01,rg-prod-web,eastus,Standard_D2s_v5,Ubuntu 22.04,running,env=prod;owner=jsmith;costcenter=4100
+vm-web-02,rg-prod-web,eastus,Standard_D2s_v5,Ubuntu 22.04,running,env=prod;owner=jsmith;costcenter=4100
+vm-web-03,RG-Prod-Web,eastus,Standard_D2s_v5,Ubuntu 22.04,running,env=prod;costcenter=4100
+vm-api-01,rg-prod-api,eastus,Standard_D4s_v5,Ubuntu 22.04,running,env=prod;Owner=mlopez;costcenter=4200
+vm-api-02,rg-prod-api,eastus,Standard_D4s_v5,Ubuntu 22.04,running,env=prod;owner=;costcenter=4200
+vm-api-01,rg-prod-api,eastus,Standard_D4s_v5,Ubuntu 22.04,running,env=prod;Owner=mlopez;costcenter=4200
+vm-sql-01,rg-prod-data,eastus2,Standard_E8s_v5,Windows Server 2022,running,env=prod;owner=dba-team;costcenter=4300;backup=daily
+vm-sql-02,rg-prod-data,eastus2,Standard_E8s_v5,Windows Server 2022,deallocated,env=prod;owner=dba-team;costcenter=4300;backup=daily
+VM-SQL-01,rg-prod-data,eastus2,Standard_E8s_v5,Windows Server 2022,running,env=prod;owner=dba-team;costcenter=4300;backup=daily
+vm-jump-01,rg-shared-mgmt,eastus,Standard_B2s,Windows Server 2022,running,
+vm-jump-02,rg-shared-mgmt,eastus,Standard_B2s,Windows Server 2022,stopped,env=shared;owner=   
+vm-build-01,rg-dev-ci,centralus,Standard_D4s_v5,Ubuntu 24.04,running,env=dev; owner=akim ;costcenter=5100
+vm-build-02,rg-dev-ci,centralus,Standard_D4s_v5,Ubuntu 24.04,running,env=dev;owner=akim;costcenter=5100
+vm-build-02 ,rg-dev-ci,centralus,Standard_D4s_v5,Ubuntu 24.04,running,env=dev;owner=akim;costcenter=5100
+vm-test-01,rg-dev-app,centralus,Standard_B2ms,Ubuntu 22.04,deallocated,env=dev;OWNER=rpatel
+vm-test-01,rg-qa-app,centralus,Standard_B2ms,Ubuntu 22.04,running,env=qa;owner=rpatel
+vm-test-02,rg-dev-app,centralus,,Ubuntu 22.04,running,env=dev;owner=rpatel
+vm-legacy-01,rg-prod-legacy,westus2,Standard_A2_v2,Windows Server 2016,running,"env=prod;owner=ops,infra;costcenter=4900"
+vm-legacy-02,rg-prod-legacy,westus2,Standard_A2_v2,Windows Server 2016,running,env=prod;costcenter=4900;owner
+vm-legacy-03, rg-prod-legacy,westus2,Standard_A2_v2,Windows Server 2016,deallocated,env=prod;owner=ops;costcenter=4900
+vm-ml-01,rg-prod-ml,eastus,Standard_NC6s_v3,Ubuntu 22.04,running,env=prod;owner_email=dchen@example.com;costcenter=4400
+vm-ml-02,rg-prod-ml,eastus,Standard_NC6s_v3,Ubuntu 22.04,running,env=prod;owner=dchen;owner=jsmith;costcenter=4400
+
+vm-cache-01,rg-prod-web,eastus,Standard_D2s_v5,Ubuntu 22.04,Running,env=prod;owner=jsmith;costcenter=4100
+vm-dc-01,rg-shared-identity,eastus,Standard_D2s_v5,Windows Server 2022,running,env=shared;owner=identity-team;costcenter=1000
+vm-dc-02,rg-shared-identity,eastus2,Standard_D2s_v5,Windows Server 2022,running,env=shared;owner=identity-team;costcenter=1000
+vm-monitor-01,rg-shared-mgmt,eastus,Standard_B2ms,Ubuntu 22.04,running,env=shared;owner=N/A;costcenter=1000
+vm-etl-01,rg-prod-data,eastus2,Standard_E4s_v5,Ubuntu 22.04,running,env=prod;owner=data-eng;costcenter=4300
+vm-etl-02,rg-prod-data,eastus2,Standard_E4s_v5,Ubuntu 22.04,running,env=prod;owner=data-eng;costcenter=4300
+vm-web-04,rg-prod-web,eastus,Standard_D2s_v5,Ubuntu 22.04,running,env=prod;owner=jsmith;costcenter=4100
+vm-orphan-01,rg-dev-app,centralus
+vm-web-05,rg-prod-web,eastus,Standard_D2s_v5,Ubuntu 22.04,running,env=prod;owner=jsmith;costcenter=4100;
