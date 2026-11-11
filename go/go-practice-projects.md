@@ -161,7 +161,7 @@ uscis.org       could not reach site: (reason)
 
 ---
 
-## 4. Log file word/line counter (NOT STARTED)
+## 4. Log file word/line counter (semi done, maybe clean it and take other considerations)
 
 **Goal:** read a text file, count how many times each word appears, and print the 10 most common.
 
